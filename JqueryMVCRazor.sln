@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JqueryMVCRazor_DAL", "JqueryMVCRazor_DAL\JqueryMVCRazor_DAL.csproj", "{A8B5BE0C-002C-4DE4-8C47-1AF3945991DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JqueryMVCRazor_Repository", "JqueryMVCRazor_Repository\JqueryMVCRazor_Repository.csproj", "{6485985F-8741-4BD4-96D2-206E357F82AE}"
@@ -28,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20CB6FFE-726E-42D3-991E-6861D3C698A9}
 	EndGlobalSection
 EndGlobal
