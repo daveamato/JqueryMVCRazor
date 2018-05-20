@@ -1,0 +1,17 @@
+﻿@model JqueryMVCRazor_Repository.EditEmployeeViewModel
+    <tr id="emp@(Model.Employee.IdEmployee)"> <td>I am from EditEmployeeViewModel.cshtml </td> 
+    <td>
+    @Html.HiddenFor(model => model.Employee.IdEmployee)
+    <div class="editor-label">
+    Name
+    </div> <div class="editor-field">
+    <input id="txtemp@(Model.Employee.IdEmployee)" value="@Model.Employee.NameEmployee" />  
+</div> </td> 
+<td>
+@Html.DropDownList("cmbemp" + Model.Employee.IdEmployee, new SelectList(Model.DepartmentList, "IDDepartment", "NameDepartment", Model.Employee.Department.IdDepartment))
+</td>
+<td> 
+
+<p> <button value="Save" onclick="javascript:saveEmployee(@Model.Employee.IdEmployee)" title="save : jquery post object">Save @Model.Employee.IdEmployee</button> </p>
+<button value="Delete" onclick="javascript:deleteEmployee(@Model.Employee.IdEmployee)" title="delete: jquery post id">Delete @Model.Employee.IdEmployee</button> </p>
+ </td> 

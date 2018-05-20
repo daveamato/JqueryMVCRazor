@@ -1,0 +1,161 @@
+﻿@model JqueryMVCRazor_Repository.ListEmployeesViewModel
+@{
+    
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<table id="tableEmp"  style="border-color:red;border-width:medium">
+
+<tr>
+<td>view</td>
+<td>Employee Name</td>
+<td>Department</td>
+<td>Actions</td>
+</tr>
+<tbody>
+@foreach (var item in Model.EmployeeListViewModel) { 
+
+@Html.EditorFor(m => item);
+
+}
+</tbody>
+</table>
+<button onclick="javascript:AddNew()" title="jquery call action">Add New Employee(jquery call action and render)</button> 
+<button onclick="javascript:PopulateComboAndTable()" title="Populate combo and table">Populate from action and Cascading drop down</button>
+
+<select id="cmbDept" style="display:none" onchange="javascript:cascadingdropdown()"> 
+</select>
+<select id="cmbEmp" style="display:none" onchange="javascript:cascadingdropdown()"> 
+</select>
+
+<p>
+    
+    Tutorial made by Andrei Ignat, <a href="http://msprogrammer.serviciipeweb.ro/" target="_blank">http://msprogrammer.serviciipeweb.ro/</a>
+
+</p>
+
+<script type="text/javascript">
+    function cascadingdropdown() {
+        var idDept = $("#cmbDept").val();
+        window.alert(" call cascading dropdown for iddepartment = " + idDept);
+        var urlemp = '@Url.Action("GetEmployeesForDepartment")';
+        var select = $('#cmbEmp');
+        $.ajax({
+            type: "POST",
+            url: urlemp,
+            data: { id: idDept },
+            success: function (returndata) {
+                if (returndata.ok) {
+
+                    window.alert('employee data is on javascript,  populating combo ');
+                    select.empty();
+                    $.each(returndata.data, function (index, itemData) {
+
+                       
+                        select.append($('<option></option>').val(itemData.IdEmployee).html(itemData.NameEmployee));
+
+
+                    });
+                    select.show('slow');
+                }
+                else {
+                    window.alert(' error : ' + returndata.message);
+                }
+
+            }
+        }
+        );
+
+    }
+    function PopulateComboAndTable() {
+        window.alert('now retrieving list of departments ');
+        var urlemp = '@Url.Action("DepartmentList")';
+        var select = $('#cmbDept');
+
+        $.ajax({
+            type: "POST",
+            url: urlemp,
+            success: function (returndata) {
+                if (returndata.ok) {
+                    window.alert('department data  is on javascript,  populating combo ');
+                    select.empty();
+                    $.each(returndata.data, function (index, itemData) {
+
+
+                        select.append($('<option></option>').val(itemData.IdDepartment).html(itemData.NameDepartment));
+
+
+                    });
+                    select.show('slow');
+                    select.change();
+                }
+                else {
+                    window.alert(' error : ' + returndata.message);
+                }
+
+            }
+        }
+        );
+    }
+    function AddNew() {
+        var urlAdd='@Url.Action("AddNewEmployee")';
+        $.get(urlAdd, function (data) {
+            window.alert(' new employee coming from action !');           
+            $('#tableEmp > tbody:last').after( data);
+            
+
+        });
+
+
+    }
+    function saveEmployee(idemployee) {
+        window.alert('now save ' + idemployee);
+        var urlSave= '@Url.Action("SaveEmployee")';
+        var dept = $("#item_cmbemp" + idemployee).val();
+        var name = $("#txtemp" + idemployee).val();
+        
+        var emp = {
+            IdEmployee: idemployee,
+            NameEmployee: name,
+            iddepartament: dept
+        };
+        $.ajax({
+            type:"POST",
+            url:urlSave,
+            data:JSON.stringify(emp),
+            datatype:"JSON",
+            contentType:"application/json; charset=utf-8",
+            success: function (returndata) {
+                if (returndata.ok) {
+                    window.alert(' saved ');                    
+                }
+                else {
+                    window.alert(' error : ' + returndata.message);
+                }
+
+            }
+        }
+        );
+
+    }
+    
+    function deleteEmployee(idemployee){
+        window.alert('now delete ' + idemployee);
+        var urlDelete = '@Url.Action("DeleteEmployee")';
+        $.post(urlDelete,
+            {id: idemployee},
+         function (returndata) 
+         {
+            if(returndata.ok){
+                window.alert(' deleted!');
+                $("#emp"+ idemployee).hide('slow');
+            }
+            else{
+                window.alert(' error : ' + returndata.message);                
+            }
+
+        });
+    }
+</script>
